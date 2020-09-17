@@ -24,4 +24,5 @@ public class ClientesModelo {
 	public ArrayList<Cliente> consultarClientes() {
 		return bd.consultarClientes();
 	}
+	
 }

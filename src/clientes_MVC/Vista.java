@@ -155,6 +155,11 @@ public class Vista extends JFrame {
 		btnConsultar.addActionListener(c);
 		btnGrabar.addActionListener(c);
 		btnModificar.addActionListener(c);
+		
+		txtRFC.addKeyListener(c);
+		txtNombre.addKeyListener(c);
+		txtEdad.addKeyListener(c);
+		txtIdCiudad.addKeyListener(c);
 	}
 	
 	

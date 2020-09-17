@@ -14,6 +14,7 @@ public class ClientesDAO {
 	        Class.forName("com.mysql.jdbc.Driver");
 	        ConexionBD = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/Registro",
 	                "root", "Metalgear");
+	       /*
 	       //recuperaCliente("AICP980316");
 	        //borrarCliente("AICP980316");
 	        //actualizarCliente("AICP980316", "Pedrisho", 16, 3);
@@ -22,6 +23,7 @@ public class ClientesDAO {
 	        for (Cliente c: consultarClientes()) {
 	        	 System.out.println(c.getRFC());
 	        }
+	        */
 	    } catch (Exception ex) {
 	        System.out.println("ClientesDAO() Error -->" + ex.getMessage());
 	    }
@@ -59,6 +61,7 @@ public class ClientesDAO {
 			 System.out.println("borrarCliente() Error -->" + ex.getMessage());
 			 iRespuesta = 0;
 		}
+		System.out.println("Borrar: "+iRespuesta);
 		return iRespuesta;
 	}
 	
@@ -66,7 +69,6 @@ public class ClientesDAO {
 	public int actualizarCliente(String sRFC, String sNombre, int iEdad, int idCiudad) {
 		int iRespuesta = 0;
 		try {
-			
 			sQuery = "UPDATE clientes SET nombre = ?, edad = ?, idCiudad = ? WHERE rfc = ?";
 			pStatement = ConexionBD.prepareStatement(sQuery);
 			pStatement.setString(1,sNombre);
@@ -74,7 +76,6 @@ public class ClientesDAO {
 			pStatement.setInt(3,idCiudad);
 			pStatement.setString(4,sRFC);
 			iRespuesta = pStatement.executeUpdate();
-			
 			
 		} catch (SQLException ex) {
 			 System.out.println("actualizarCliente() Error -->" + ex.getMessage());
