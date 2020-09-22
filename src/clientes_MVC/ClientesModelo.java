@@ -13,16 +13,15 @@ public class ClientesModelo {
 	public int borrarCliente(String sRFC) {
 		return bd.borrarCliente(sRFC);
 	}
-	public int actualizarCliente(String sRFC, String sNombre, int iEdad, int idCiudad) {
-		return bd.actualizarCliente(sRFC, sNombre, iEdad, idCiudad);
+	public int actualizarCliente(Cliente objCliente) {
+		return bd.actualizarCliente(objCliente);
 	}
 	
-	public int grabarCliente(String sRFC, String sNombre, int iEdad, int idCiudad) {
-		return bd.grabarCliente(sRFC, sNombre, iEdad, idCiudad);
+	public int grabarCliente(Cliente objCliente) {
+		return bd.grabarCliente(objCliente);
 	}
 	
 	public ArrayList<Cliente> consultarClientes() {
 		return bd.consultarClientes();
 	}
-	
 }

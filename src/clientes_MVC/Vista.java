@@ -18,6 +18,7 @@ public class Vista extends JFrame {
 	JTextField txtRFC, txtNombre, txtEdad, txtIdCiudad;
 	JButton btnRecuperar, btnBorrar, btnConsultar, btnGrabar, btnModificar;
 	ImageIcon imgConsultar, imgGrabar, imgModificar, imgBorrar, imgRecuperar;
+	
 
 	public Vista() {
 		super("*** Mantenimiento al Catálogo de Clientes ***");
@@ -131,6 +132,7 @@ public class Vista extends JFrame {
 		llenarTabla(arrClientes);		
 		modal.setVisible(true);
 	}
+	
 	
 	//Poner como parámetro una variable del Controlador para que lleguen los datos
 	public void llenarTabla(ArrayList<Cliente> arrClientes) {

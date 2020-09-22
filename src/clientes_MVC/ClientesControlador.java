@@ -16,7 +16,8 @@ public class ClientesControlador implements ActionListener, KeyListener {
 
 	@Override
 	public void actionPerformed(ActionEvent evt){
-		if(evt.getSource() == vista.btnRecuperar) {
+		if(evt.getSource() == vista.btnRecuperar)
+		{
 			//recuperar la información de todos los campos después de escribir el RFC en su campo
 			if(vista.getRfc().length() == 10)
 			{
@@ -33,8 +34,10 @@ public class ClientesControlador implements ActionListener, KeyListener {
 			else
 				vista.error("El RFC capturado no es válido (10 caracteres).");
 			return;
-//--------------------------------------------------------------------------------------------
-		}else if(evt.getSource() == vista.btnBorrar) {
+//------------------------------------------------------------------------------------------------
+			
+		}else if(evt.getSource() == vista.btnBorrar)
+		{
 			//borrar toda la tupla del RFC que se recuperó
 			if(vista.getRfc().length() == 10)
 			{
@@ -49,18 +52,22 @@ public class ClientesControlador implements ActionListener, KeyListener {
 			else
 				vista.error("El RFC capturado no es válido (10 caracteres).");
 			return;
-//--------------------------------------------------------------------------------------------
-		}else if(evt.getSource() == vista.btnConsultar) {
+//------------------------------------------------------------------------------------------------
+			
+		}else if(evt.getSource() == vista.btnConsultar)
+		{
 			//desplegar un modal donde aparezcan todas las tuplas de la tabla Clientes
 			arrClientes = modelo.consultarClientes();
 			vista.tablaRegistros(arrClientes);
 			return;
-//----------------------------------------------------------------------------------------------
-		}else if(evt.getSource() == vista.btnGrabar) {
+//------------------------------------------------------------------------------------------------
+
+		}else if(evt.getSource() == vista.btnGrabar)
+		{
 			//guardar un registro después de haber llenado todos los campos de la interfaz
 			if(vista.getRfc().length() == 10 && !vista.getNombre().equals("") && vista.getEdad()!=0 && vista.getIdCiudad()!=0)
 			{
-				int resp = modelo.grabarCliente(vista.getRfc(),vista.getNombre(),vista.getEdad(),vista.getIdCiudad());
+				int resp = modelo.grabarCliente(new Cliente(vista.getRfc(), vista.getNombre(), vista.getEdad(), vista.getIdCiudad()));
 				if(resp==1) {
 					vista.exito("Cliente grabado con éxito.");
 					vista.limpiarCampos();
@@ -71,14 +78,18 @@ public class ClientesControlador implements ActionListener, KeyListener {
 			else
 				vista.error("Campos con datos inválidos.");
 			return;
-//--------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------
+
 		}else if(evt.getSource() == vista.btnModificar) {
 			 //modificar una tupla después de haberla recuperado
 			if(vista.getRfc().length() == 10 && !vista.getNombre().equals("") && vista.getEdad()!=0 && vista.getIdCiudad()!=0)
 			{
-				int resp = modelo.actualizarCliente(vista.getRfc(),vista.getNombre(),vista.getEdad(),vista.getIdCiudad());
-				if(resp==1)
+				int resp = modelo.actualizarCliente(new Cliente(vista.getRfc(),vista.getNombre(),vista.getEdad(),vista.getIdCiudad()));
+				if(resp==1) 
+				{
 					vista.exito("Cliente modificado con éxito.");
+					vista.limpiarCampos();
+				}
 				else
 					vista.error("El RFC capturado no existe.");
 			}
@@ -96,21 +107,19 @@ public class ClientesControlador implements ActionListener, KeyListener {
 		
 		//Valida RFC; Letras mayusculas, primero 4 caracteres son letras, ultimos 6 son numeros 
 		if(evt.getSource() == vista.txtRFC) {
-			if(vista.getRfc().length() < 4) 
-			{
-				sRegex = "[A-Z|Ñ]";
+			if(vista.getRfc().length() < 4) {
+				sRegex = "[A-Z]";
 			}else {
 				sRegex = "[0-9]";
 			}
-			if (vista.getRfc().length()<10) 
-			{
+			if (vista.getRfc().length()<10) {
 				if (evt.getKeyCode() != KeyEvent.VK_SHIFT && !sCaracter.matches(sRegex)) {
 					evt.consume();
 				}
 			}else {
 				evt.consume();
 			}
-			
+			return;
 		}
 		
 		//Valida nombre: Solo letras y espacios
@@ -149,12 +158,11 @@ public class ClientesControlador implements ActionListener, KeyListener {
 			return;
 		}
 		
-		
 	}
 
+	
 	@Override
 	public void keyPressed(KeyEvent evt) {
-		
 	}
 
 	@Override

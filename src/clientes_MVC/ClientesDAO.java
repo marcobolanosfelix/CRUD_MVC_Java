@@ -1,4 +1,4 @@
-package clientes_MVC;
+ package clientes_MVC;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -14,68 +14,66 @@ public class ClientesDAO {
 	        Class.forName("com.mysql.jdbc.Driver");
 	        ConexionBD = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/Registro",
 	                "root", "Metalgear");
-	       /*
-	       //recuperaCliente("AICP980316");
-	        //borrarCliente("AICP980316");
-	        //actualizarCliente("AICP980316", "Pedrisho", 16, 3);
-	        //grabarCliente("AICP980317", "Pedrisho", 16, 3);
 	        
-	        for (Cliente c: consultarClientes()) {
+	        for (Cliente  c: consultarClientes())
+	        {
 	        	 System.out.println(c.getRFC());
 	        }
-	        */
 	    } catch (Exception ex) {
 	        System.out.println("ClientesDAO() Error -->" + ex.getMessage());
 	    }
 	}
 	
-	//Consultar tupla mediante el RFC
+	
 	public Cliente recuperaCliente(String sRFC) {
 		Cliente objClient = null;
 		try {
 			statement = ConexionBD.createStatement();
-			sQuery = "SELECT rfc, nombre, edad, idciudad FROM clientes WHERE rfc = '"+sRFC+"'";
-			ResultSet rs= statement.executeQuery(sQuery);
+			sQuery = "SELECT rfc, nombre, edad, idCiudad FROM Clientes WHERE rfc = ?";
+			pStatement = ConexionBD.prepareStatement(sQuery);
+			pStatement.setString(1,sRFC);
+			ResultSet rs= pStatement.executeQuery();
 			
-			if(rs.next()) {
+			if(rs.next())
 				objClient = new Cliente(rs.getObject("rfc").toString(), rs.getObject("nombre").toString(), (int)rs.getObject("edad"), (int) rs.getObject("idciudad"));
-			}
-					
+			
 		} catch (SQLException ex) {
 			 System.out.println("recuperaCliente() Error -->" + ex.getMessage());
 			 objClient = null;
-		}
-		
+		}	
 		return objClient;
 	}
 	
-	//Remover tupla
+	
 	public int borrarCliente(String sRFC) {
 		int iRespuesta = 0;
-		try {
-			statement = ConexionBD.createStatement();
-			sQuery = "DELETE FROM clientes WHERE rfc = '"+sRFC+"'";
-			iRespuesta = statement.executeUpdate(sQuery);
+		try {			
+			sQuery = "DELETE FROM Clientes WHERE rfc = ?";
+			pStatement = ConexionBD.prepareStatement(sQuery);
+			pStatement.setString(1,sRFC);
+			
+			iRespuesta = pStatement.executeUpdate();
+			pStatement.close();
 			
 		} catch (SQLException ex) {
 			 System.out.println("borrarCliente() Error -->" + ex.getMessage());
 			 iRespuesta = 0;
 		}
-		System.out.println("Borrar: "+iRespuesta);
 		return iRespuesta;
 	}
 	
-	//Actualizar tupla
-	public int actualizarCliente(String sRFC, String sNombre, int iEdad, int idCiudad) {
+	
+	public int actualizarCliente(Cliente objCliente) {
 		int iRespuesta = 0;
 		try {
-			sQuery = "UPDATE clientes SET nombre = ?, edad = ?, idCiudad = ? WHERE rfc = ?";
+			sQuery = "UPDATE Clientes SET nombre = ?, edad = ?, idCiudad = ? WHERE rfc = ?";
 			pStatement = ConexionBD.prepareStatement(sQuery);
-			pStatement.setString(1,sNombre);
-			pStatement.setInt(2,iEdad);
-			pStatement.setInt(3,idCiudad);
-			pStatement.setString(4,sRFC);
+			pStatement.setString(1,objCliente.getNombre());
+			pStatement.setInt(2,objCliente.getEdad());
+			pStatement.setInt(3,objCliente.getIdCiudad());
+			pStatement.setString(4,objCliente.getRFC());
 			iRespuesta = pStatement.executeUpdate();
+			pStatement.close();
 			
 		} catch (SQLException ex) {
 			 System.out.println("actualizarCliente() Error -->" + ex.getMessage());
@@ -84,17 +82,18 @@ public class ClientesDAO {
 		return iRespuesta;
 	}
 	
-	//Insertar tupla
-	public int grabarCliente(String sRFC, String sNombre, int iEdad, int idCiudad) {
+	
+	public int grabarCliente(Cliente objCliente) {
 		int iRespuesta = 0;
-		try {
-			sQuery = "INSERT INTO clientes values (?,?,?,?)";
+		try {		
+			sQuery = "INSERT INTO Clientes values (?,?,?,?)";
 			pStatement = ConexionBD.prepareStatement(sQuery);
-			pStatement.setString(1,sRFC);
-			pStatement.setString(2,sNombre);
-			pStatement.setInt(3,iEdad);
-			pStatement.setInt(4,idCiudad);
+			pStatement.setString(1,objCliente.getRFC());
+			pStatement.setString(2,objCliente.getNombre());
+			pStatement.setInt(3,objCliente.getEdad());
+			pStatement.setInt(4,objCliente.getIdCiudad());
 			iRespuesta = pStatement.executeUpdate();
+			pStatement.close();
 			
 		} catch (SQLException ex) {
 			 System.out.println("grabarCliente() Error -->" + ex.getMessage());
@@ -103,22 +102,23 @@ public class ClientesDAO {
 		return iRespuesta;
 	}
 	
-	//Consultar todas las tuplas
+	
 	public ArrayList<Cliente> consultarClientes() {
 		ArrayList<Cliente> arrClientes = new ArrayList<Cliente>();
 		try {
 			statement = ConexionBD.createStatement();
-			sQuery = "SELECT rfc, nombre, edad, idciudad FROM clientes";
+			sQuery = "SELECT rfc, nombre, edad, idCiudad FROM Clientes";
 			ResultSet rs= statement.executeQuery(sQuery);
 			
 			while(rs.next()) {
-				arrClientes.add(new Cliente(rs.getObject("rfc").toString(), rs.getObject("nombre").toString(), (int)rs.getObject("edad"), (int) rs.getObject("idciudad")));
+				arrClientes.add(new Cliente(rs.getObject("rfc").toString(), rs.getObject("nombre").toString(), (int)rs.getObject("edad"), (int) rs.getObject("idCiudad")));
 			}
+			statement.close();
+			rs.close();
 			
 		} catch (SQLException ex) {
 			 System.out.println("consultarClientes() Error -->" + ex.getMessage());
-		}
-		
+		}	
 		return arrClientes;
 	}
 	
